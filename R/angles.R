@@ -1,8 +1,13 @@
-#' Calculate Angle Between Two Vectors
+#' @title Calculate Angle Between Two Vectors
+#' @name calculate_angle
 #'
 #' @param u Numeric vector representing the first vector.
 #' @param v Numeric vector representing the second vector.
+#'
 #' @return Numeric value representing the angle in degrees.
+#'
+#' @export
+
 calculate_angle <- function(u, v) {
   dot_product <- sum(u * v)
   magnitude_u <- sqrt(sum(u^2))
@@ -12,10 +17,17 @@ calculate_angle <- function(u, v) {
   return(angle)
 }
 
-#' Calculate Angles for a Track
+#' @title Calculate Angles for a Track
+#' @name calculate_angles_for_track
 #'
 #' @param track_data Data frame containing the track data with columns 'x' and 'y'
+#' @param x The colum name with the x-coordinates of the 2D motion capture
+#' @param y The colum name with the y-coordinates of the 2D motion capture
+#'
 #' @return Numeric vector of angles for the track.
+#'
+#' @export
+
 calculate_angles_for_track <- function(track_data, x, y) {
   n <- nrow(track_data)
   angles <- numeric(n)
