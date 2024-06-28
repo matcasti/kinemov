@@ -33,3 +33,10 @@ You can install the development version of kinemov like so:
 devtools::install_github("matcasti/kinemov")
 ```
 
+## Example
+
+You can try using the example dataset `gait` this way:
+
+```r
+plot_motion(gait, x_coord, y_coord, frame)
+```
