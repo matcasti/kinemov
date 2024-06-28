@@ -57,8 +57,28 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9">
-This pacakge works by leveraging the use of 2D motion capture data to provide easy to use visualizations and tools.
+  <main id="main" class="col-md-9"><div class="section level1">
+<div class="page-header"><h1 id="kinemov">kinemov<a class="anchor" aria-label="anchor" href="#kinemov"></a>
+</h1></div>
+<!-- badges: start -->
+
+<p>The goal of kinemov is to provide a simple and easy to use interface to visualize and analyze 2-dimensional motion capture data.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install the development version of kinemov like so:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"matcasti/kinemov"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
+<p>You can try using the example dataset <code>gait</code> this way:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/plot_motion.html">plot_motion</a></span><span class="op">(</span><span class="va">gait</span>, <span class="va">x_coord</span>, <span class="va">y_coord</span>, <span class="va">frame</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
@@ -98,7 +118,15 @@ This pacakge works by leveraging the use of 2D motion capture data to provide ea
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+<li><a href="https://CRAN.R-project.org/package=kinemov" class="external-link"><img src="https://www.r-pkg.org/badges/version/kinemov" alt="CRAN status"></a></li>
+<li><a href="https://github.com/matcasti/kinemov/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/matcasti/kinemov/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://app.codecov.io/gh/matcasti/kinemov?branch=master" class="external-link"><img src="https://codecov.io/gh/matcasti/kinemov/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+</ul>
+</div>
 
   </aside>
 </div>
