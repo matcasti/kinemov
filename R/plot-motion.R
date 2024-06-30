@@ -36,22 +36,28 @@ plot_motion <- function(data, x, y, frames) {
 
 plot_degrees <- function(data, x, y, joint_ids, frames, plot = TRUE) {
 
+  angle <- NULL
+
   data$angle <- NA
   x_var <- deparse(substitute(x))
   y_var <- deparse(substitute(y))
   joint_var <- deparse(substitute(joint_ids))
   frame_var <- deparse(substitute(frames))
 
-  unique_tids <- unique(data[[frame_var]])
+  unique_frames <- unique(data[[frame_var]])
 
-  for (tid in unique_tids) {
-    data[data[[frame_var]] == tid, "angle"] <- calculate_angles_for_track(data[data[[frame_var]] == tid,], x_var, y_var)
+  for (one_frame in unique_frames) {
+    ind <- data[[frame_var]] == one_frame
+    data[ind, "angle"] <- calculate_angles_for_track(data[ind,], x_var, y_var)
   }
 
-  if(!plot) return(data)
+  if(!plot) {
+    out_data <- data[,c(joint_var, frame_var, x_var, y_var, "angle")]
+    return(out_data)
+  }
 
   # Plot the data using ggplot2
-  ggplot2::ggplot(data = data[data$angle != 0,],
+  ggplot2::ggplot(data = data[!is.na(data$angle),],
                   mapping = ggplot2::aes(x = .data[[frame_var]]/max(.data[[frame_var]]), y = angle, col = .data[[frame_var]])) +
     ggplot2::facet_grid(ggplot2::vars(.data[[joint_var]]), scales = "free_y") +
     ggplot2::geom_point(na.rm = T) +

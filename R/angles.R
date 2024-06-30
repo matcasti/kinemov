@@ -1,22 +1,3 @@
-#' @title Calculate Angle Between Two Vectors
-#' @name calculate_angle
-#'
-#' @param u Numeric vector representing the first vector.
-#' @param v Numeric vector representing the second vector.
-#'
-#' @return Numeric value representing the angle in degrees.
-#'
-#' @export
-
-calculate_angle <- function(u, v) {
-  dot_product <- sum(u * v)
-  magnitude_u <- sqrt(sum(u^2))
-  magnitude_v <- sqrt(sum(v^2))
-  cos_theta <- dot_product / (magnitude_u * magnitude_v)
-  angle <- acos(cos_theta) * 180 / pi
-  return(angle)
-}
-
 #' @title Calculate Angles for a Track
 #' @name calculate_angles_for_track
 #'
@@ -29,17 +10,39 @@ calculate_angle <- function(u, v) {
 #' @export
 
 calculate_angles_for_track <- function(track_data, x, y) {
+  # Check for valid input data
+  if (!is.data.frame(track_data)) stop("track_data must be a data frame")
+  if (!(x %in% names(track_data) && y %in% names(track_data))) stop("x and y must be valid column names in track_data")
+  if (nrow(track_data) < 3) return(rep(NA, nrow(track_data)))  # Not enough points to calculate angles
+
   n <- nrow(track_data)
-  angles <- numeric(n)
-  for (i in 2:(n - 1)) {
-    p1 <- track_data[i - 1, c(x, y)]
-    p2 <- track_data[i, c(x, y)]
-    p3 <- track_data[i + 1, c(x, y)]
+  angles <- rep(NA, n)  # Pre-allocate the angles vector
 
-    u <- as.numeric(p2 - p1)
-    v <- as.numeric(p3 - p2)
+  # Extract coordinates
+  x_coords <- track_data[[x]]
+  y_coords <- track_data[[y]]
 
-    angles[i] <- calculate_angle(u, v)
-  }
+  # Calculate differences between consecutive points
+  dx <- diff(x_coords)
+  dy <- diff(y_coords)
+
+  # Calculate vectors for points 1:(n-2), 2:(n-1), and 3:n
+  u_x <- dx[1:(n-2)]
+  u_y <- dy[1:(n-2)]
+  v_x <- dx[2:(n-1)]
+  v_y <- dy[2:(n-1)]
+
+  # Calculate dot products and magnitudes
+  dot_products <- u_x * v_x + u_y * v_y
+  magnitudes_u <- sqrt(u_x^2 + u_y^2)
+  magnitudes_v <- sqrt(v_x^2 + v_y^2)
+
+  # Calculate cosine of angles, handle numerical issues
+  cos_theta <- pmin(1, pmax(-1, dot_products / (magnitudes_u * magnitudes_v)))
+
+  # Calculate angles in degrees
+  angles[2:(n - 1)] <- acos(cos_theta) * 180 / pi
+
   return(angles)
 }
+

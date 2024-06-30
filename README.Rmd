@@ -37,6 +37,59 @@ devtools::install_github("matcasti/kinemov")
 
 You can try using the example dataset `gait` this way:
 
-```r
-plot_motion(gait, x_coord, y_coord, frame)
+```{r}
+library(kinemov)
+
+plot_motion(gait, x_coord, y_coord, frame) 
+```
+
+You can also plot the degrees between joints in this way:
+
+```{r}
+fig <- plot_degrees(gait, x_coord, y_coord, joint, frame)
+fig
+```
+
+As it is a ggplot object, you can further customize the output object:
+
+```{r}
+library(ggplot2)
+library(scales)
+
+fig + 
+  labs(title = "Gait Arthrokinematics",
+       subtitle = "Assessed through manual motion capture with ImageJ",
+       caption = "Source: Own elaboration") +
+  scale_color_viridis_c(option = "C") + 
+  scale_x_continuous(labels = label_percent()) + 
+  theme(plot.background = element_rect(fill = "black"),
+        panel.background = element_rect(fill = "black"),
+        strip.background = element_rect(fill = "black"),
+        legend.background = element_rect(fill = "black"),
+        panel.grid = element_blank(),
+        text = element_text(colour = "white"),
+        axis.text = element_text(colour = "white"))
+```
+
+And from the `plot_degrees()` function, you can also only extract the degrees by specifying `plot = FALSE`:
+
+```{r}
+out <- plot_degrees(gait, x_coord, y_coord, joint, frame, plot = FALSE)
+
+subset(out, !is.na(angle)) |> head()
+```
+
+One can further process the output data.frame to better describe the angles for each joint and for each frame:
+
+```{r}
+library(data.table)
+
+out <- as.data.table(out)
+out[i = !is.na(angle), 
+    j = list(min = min(angle), 
+             mean = mean(angle),
+             median = median(angle),
+             max = max(angle)) |> 
+      lapply(round),
+    by = joint]
 ```
