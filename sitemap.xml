@@ -28,6 +28,9 @@
     <loc>https://matcasti.github.io/kinemov/reference/calculate_angles_for_track.html</loc>
   </url>
   <url>
+    <loc>https://matcasti.github.io/kinemov/reference/complement_angle.html</loc>
+  </url>
+  <url>
     <loc>https://matcasti.github.io/kinemov/reference/gait.html</loc>
   </url>
   <url>
@@ -38,5 +41,11 @@
   </url>
   <url>
     <loc>https://matcasti.github.io/kinemov/reference/plot_motion.html</loc>
+  </url>
+  <url>
+    <loc>https://matcasti.github.io/kinemov/reference/to_degrees.html</loc>
+  </url>
+  <url>
+    <loc>https://matcasti.github.io/kinemov/reference/to_radians.html</loc>
   </url>
 </urlset>
