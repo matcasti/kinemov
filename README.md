@@ -28,6 +28,8 @@ devtools::install_github("matcasti/kinemov")
 
 ## Example
 
+### Visualize motion
+
 You can try using the example dataset `gait` this way:
 
 ``` r
@@ -37,6 +39,8 @@ plot_motion(gait, x_coord, y_coord, frame)
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+
+### Visualize arthrokinematics
 
 You can also plot the degrees between joints in this way:
 
@@ -62,6 +66,7 @@ fig +
   theme(plot.background = element_rect(fill = "black"),
         panel.background = element_rect(fill = "black"),
         strip.background = element_rect(fill = "black"),
+        strip.text = element_text(colour = "white"),
         legend.background = element_rect(fill = "black"),
         panel.grid = element_blank(),
         text = element_text(colour = "white"),
@@ -69,6 +74,8 @@ fig +
 ```
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+
+### Extracting information
 
 And from the `plot_degrees()` function, you can also only extract the
 degrees by specifying `plot = FALSE`:
