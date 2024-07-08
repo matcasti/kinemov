@@ -35,7 +35,12 @@ You can try using the example dataset `gait` this way:
 ``` r
 library(kinemov)
 
-plot_motion(gait, x_coord, y_coord, frame) 
+plot_motion(
+  data = gait, # Data containing our variables
+  x = x_coord, # Variable with our X-Coordinates
+  y = y_coord, # Variable with our Y-Coordinates
+  frames = frame # Variable with our Frame IDs
+) 
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
@@ -45,13 +50,61 @@ plot_motion(gait, x_coord, y_coord, frame)
 You can also plot the degrees between joints in this way:
 
 ``` r
-fig <- plot_degrees(gait, x_coord, y_coord, joint, frame)
-fig
+plot_degrees(
+  data = gait, # Data containing our variables
+  x = x_coord, # Variable with our X-Coordinates
+  y = y_coord,  # Variable with our Y-Coordinates
+  joint_ids = joint, # Variable with our Joint IDs
+  frames = frame # Variable with our Frame IDs
+)
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
-As it is a ggplot object, you can further customize the output object:
+However, you might see that some degrees are negative, this is because
+not every angle is formed from the same side. For instance, see the knee
+(ID = 4) and ankle (ID = 3) angles compared to the hip angles (ID = 5).
+Given that the angle behind the knee and the ankle are on the right
+side, the angles are shown negative. We can easily fix this by
+leveraging the `inv_joint_angles` argument as follow:
+
+``` r
+plot_degrees(
+  data = gait,
+  x = x_coord,
+  y = y_coord,
+  joint_ids = joint,
+  frames = frame,
+  inv_joint_angles = c("3", "4") # Joint IDs to invert (negative to positive)
+)
+```
+
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+
+We can also add a smooth line by using the `smooth` argument and
+specifyin one of `"gam"` or `"loess"` to determine which method to use
+to draw a smooth line. We can do this as follow:
+
+``` r
+fig <- plot_degrees(
+  data = gait,
+  x = x_coord,
+  y = y_coord,
+  joint_ids = joint,
+  frames = frame,
+  inv_joint_angles = c("3", "4"),
+  smooth = "loess", # Smooth method to use
+  span = .3, # LOESS "smoothness" parameter
+)
+
+fig
+#> `geom_smooth()` using formula = 'y ~ x'
+```
+
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+
+And as it is a ggplot object, we can further customize the output object
+by using other ggplot geoms like this:
 
 ``` r
 library(ggplot2)
@@ -71,9 +124,10 @@ fig +
         panel.grid = element_blank(),
         text = element_text(colour = "white"),
         axis.text = element_text(colour = "white"))
+#> `geom_smooth()` using formula = 'y ~ x'
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
 ### Extracting information
 
@@ -110,7 +164,7 @@ out[i = !is.na(angle),
 #>    joint   min  mean median   max
 #>    <int> <num> <num>  <num> <num>
 #> 1:     2   119   130    129   144
-#> 2:     3    15    39     38    56
-#> 3:     4     6    28     19    74
-#> 4:     5     1    18     17    40
+#> 2:     3   -56   -39    -38   -15
+#> 3:     4   -74   -28    -19    -6
+#> 4:     5    -1    18     17    40
 ```
