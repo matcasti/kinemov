@@ -4,7 +4,17 @@
 \alias{plot_degrees}
 \title{Visualize the angles between joints across frames}
 \usage{
-plot_degrees(data, x, y, joint_ids, frames, plot = TRUE)
+plot_degrees(
+  data,
+  x,
+  y,
+  joint_ids,
+  frames,
+  inv_joint_angles = NULL,
+  smooth = NULL,
+  ...,
+  plot = TRUE
+)
 }
 \arguments{
 \item{data}{Dataset with motion capture data.}
@@ -16,6 +26,12 @@ plot_degrees(data, x, y, joint_ids, frames, plot = TRUE)
 \item{joint_ids}{Unquoted variable name with the joint ids.}
 
 \item{frames}{Unquoted variable name with the frame ids for each joint.}
+
+\item{inv_joint_angles}{Character. Levels of the joint_ids to invert the angles (i.e., negative to positive angles and viceversa).}
+
+\item{smooth}{Character. Method to use to draw a smooth line interpolating the data points. Options are "loess" or "gam". (defaults to NULL).}
+
+\item{...}{Further arguments passed to ggplot2::geom_smooth().}
 
 \item{plot}{Logical. Wheather to obtain the plot (TRUE) or the data with angle measurements (F).}
 }

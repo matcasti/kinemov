@@ -9,7 +9,7 @@ test_that("calculate_angles_for_track works correctly", {
   angles <- calculate_angles_for_track(track_data, "x", "y")
 
   # Expected results
-  expected_angles <- c(NA, 90, 90, 90, NA)
+  expected_angles <- c(NA, -90, 90, -90, NA)
 
   # Check if the angles are as expected (within a tolerance)
   expect_equal(angles, expected_angles, tolerance = 1e-6)

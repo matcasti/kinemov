@@ -37,11 +37,20 @@ calculate_angles_for_track <- function(track_data, x, y) {
   magnitudes_u <- sqrt(u_x^2 + u_y^2)
   magnitudes_v <- sqrt(v_x^2 + v_y^2)
 
+  # Calculate cross products to determine the sign of the angle
+  cross_products <- u_x * v_y - u_y * v_x
+
   # Calculate cosine of angles, handle numerical issues
   cos_theta <- pmin(1, pmax(-1, dot_products / (magnitudes_u * magnitudes_v)))
 
-  # Calculate angles in degrees
-  angles[2:(n - 1)] <- acos(cos_theta) * 180 / pi
+  # Calculate angles in radians
+  angles_rad <- acos(cos_theta)
+
+  # Determine the sign of the angle
+  angles_signed <- angles_rad * sign(cross_products)
+
+  # Convert angles to degrees
+  angles[2:(n - 1)] <- to_degrees(angles_signed)
 
   return(angles)
 }

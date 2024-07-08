@@ -23,7 +23,7 @@ test_that("plot_degrees generates a ggplot object and calculates angles correctl
   )
 
   # Generate the plot
-  plot <- plot_degrees(sample_data, x, y, joint_ids, frames)
+  plot <- plot_degrees(sample_data, x, y, joint_ids, frames, inv_joint_angles = c("1", "3"), smooth = "loess", span = 1)
 
   # Check if the output is a ggplot object
   expect_s3_class(plot, "ggplot")
@@ -55,4 +55,30 @@ test_that("plot_degrees returns data with angle measurements when plot is FALSE"
 
   # Check if the angle column exists
   expect_true("angle" %in% names(angle_data))
+})
+
+test_that("plot_degrees fails when inv_joint_angles are not in data", {
+  # Create sample data
+  sample_data <- data.frame(
+    x = c(1, 2, 3, 4, 5, 1+1, 2+2, 3+3, 4+4, 5+5, 1, 2, 3, 4, 5),
+    y = c(1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3),
+    joint_ids = rep(1:3, each = 5),
+    frames = rep(1:5, 3)
+  )
+
+  # Get the angle data
+  expect_error(plot_degrees(sample_data, x, y, joint_ids, frames, inv_joint_angles = c("1", "4")), 'One or more "inv_joint_angles" ids are not present in the data')
+})
+
+test_that("plot_degrees fails when smooth are not in the selected options", {
+  # Create sample data
+  sample_data <- data.frame(
+    x = c(1, 2, 3, 4, 5, 1+1, 2+2, 3+3, 4+4, 5+5, 1, 2, 3, 4, 5),
+    y = c(1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3),
+    joint_ids = rep(1:3, each = 5),
+    frames = rep(1:5, 3)
+  )
+
+  # Get the angle data
+  expect_error(plot_degrees(sample_data, x, y, joint_ids, frames, smooth = "lm"), '"smooth" must be one of "gam" or "spline".')
 })

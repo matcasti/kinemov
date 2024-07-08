@@ -43,7 +43,12 @@ You can try using the example dataset `gait` this way:
 ```{r}
 library(kinemov)
 
-plot_motion(gait, x_coord, y_coord, frame) 
+plot_motion(
+  data = gait, # Data containing our variables
+  x = x_coord, # Variable with our X-Coordinates
+  y = y_coord, # Variable with our Y-Coordinates
+  frames = frame # Variable with our Frame IDs
+) 
 ```
 
 ### Visualize arthrokinematics
@@ -51,11 +56,47 @@ plot_motion(gait, x_coord, y_coord, frame)
 You can also plot the degrees between joints in this way:
 
 ```{r}
-fig <- plot_degrees(gait, x_coord, y_coord, joint, frame)
+plot_degrees(
+  data = gait, # Data containing our variables
+  x = x_coord, # Variable with our X-Coordinates
+  y = y_coord,  # Variable with our Y-Coordinates
+  joint_ids = joint, # Variable with our Joint IDs
+  frames = frame # Variable with our Frame IDs
+)
+```
+
+However, you might see that some degrees are negative, this is because not every angle is formed from the same side. For instance, see the knee (ID = 4) and ankle (ID = 3) angles compared to the hip angles (ID = 5). Given that the angle behind the knee and the ankle are on the right side, the angles are shown negative. We can easily fix this by leveraging the `inv_joint_angles` argument as follow:
+
+```{r}
+plot_degrees(
+  data = gait,
+  x = x_coord,
+  y = y_coord,
+  joint_ids = joint,
+  frames = frame,
+  inv_joint_angles = c("3", "4") # Joint IDs to invert (negative to positive)
+)
+```
+
+
+We can also add a smooth line by using the `smooth` argument and specifyin one of `"gam"` or `"loess"` to determine which method to use to draw a smooth line. We can do this as follow:
+
+```{r}
+fig <- plot_degrees(
+  data = gait,
+  x = x_coord,
+  y = y_coord,
+  joint_ids = joint,
+  frames = frame,
+  inv_joint_angles = c("3", "4"),
+  smooth = "loess", # Smooth method to use
+  span = .3, # LOESS "smoothness" parameter
+)
+
 fig
 ```
 
-As it is a ggplot object, you can further customize the output object:
+And as it is a ggplot object, we can further customize the output object by using other ggplot geoms like this:
 
 ```{r}
 library(ggplot2)
